@@ -35,6 +35,9 @@ What happened: The range of the left panel and main screen does not match fo Eas
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
+- I used Copilot to help me fix the bug on indicator messages. The core problem was that the output continued displaying "Go Higher" after all guesses, which was unexpected behavior. I used Copilot to help me point out the error, offer solutions, and test cases. Copilot did a great job at helping me debug this issue and I was able to create 3 tests for it on the logic_utils.py file to make sure the output was as expected. 
+
+- Copilot helped me create test cases for the Go Higher/Lower indicators, although I believe tha the agent could have made the test cases more specific and thorough. I also realized that while I was trying to fix some of the range indicators to make the panel and main screen match, Copilot tried switching the core logic and range threshold for the Hard difficulty level, which was not necessary. After testing out the game, I realized that the core logic for the Hard difficulty level was no longer the same, and made sure to tell Copilot exactly the specifications I needed for the core functionality. 
 ---
 
 ## 3. Debugging and testing your fixes
@@ -44,6 +47,9 @@ What happened: The range of the left panel and main screen does not match fo Eas
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
 
+I decided a bug was fixed when it passed both a manual check in the running Streamlit app and the automated pytest suite. 
+For the Go Higher/Lower indicator bug, I ran `pytest -q` in the terminal and confirmed that `test_hint_message_go_lower` and `test_hint_message_go_higher` both passed.This meant that the `get_hint_message("Too High")` correctly returns `"📉 Go LOWER!"` and the `get_hint_message("Too Low")` correctly returns `"📈 Go HIGHER!"`. I also verified manually by opening the app, enabling the debug panel to see the secret number, and deliberately guessing too high and too low to confirm the displayed hint matched the expected direction. Copilot helped me design the hint tests by suggesting `get_hint_message` as a separate testable function, which made it easier to isolate the display logic from the comparison logic in `check_guess`. However, Copilot could have been more specific over the tests it created.
+
 ---
 
 ## 4. What did you learn about Streamlit and state?
@@ -52,6 +58,8 @@ What happened: The range of the left panel and main screen does not match fo Eas
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 - What change did you make that finally gave the game a stable secret number?
 
+The secret number kept changing because Streamlit reruns the script from top to bottom after each interaction, like clicking Submit. If the number is generated in normal local code on each rerun, it gets replaced again and again.
+Reruns are a full refresh of your Python script, and session state is a storage box that survives those refreshes for one user session. Once I understood that, I only created the secret number when it was missing from session state instead of recreating it every run. That change made the game stable and predictable, and the same secret stayed in place until New Game was clicked.
 ---
 
 ## 5. Looking ahead: your developer habits
@@ -60,3 +68,5 @@ What happened: The range of the left panel and main screen does not match fo Eas
   - This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+One strategy I want to reuse is pairing manual testing with small focused pytest checks, because it helped me confirm both player experience and logic correctness. I also want to ask AI to justify each logic change before I apply it, especially for core game rules like difficulty ranges. AI can sometimes accidentally change core logic that can mess with the functionality of the project, and I want to continue practicing to check over my AI before applying any direct changes. 

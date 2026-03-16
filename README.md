@@ -26,13 +26,22 @@ It wrote the code, ran away, and now the game is unplayable.
 ## 📝 Document Your Experience
 
 - [ ] Describe the game's purpose.
+This game is a Guessing game in which the user inputs a selected amount of guesses with or without hints to guess a number within a selected range. The game comes in three difficulty levels, each with a different number of attempts and range of numbers to guess from. 
+
 - [ ] Detail which bugs you found.
+Detail which bugs you found.  
+I found three major bugs:
+1. The hint logic was inconsistent and sometimes gave the wrong higher/lower direction.
+2. Attempt handling was confusing, and the game could report "Out of attempts" in unexpected situations.
+3. Difficulty ranges were inconsistent between what was shown and what the game logic used (especially for Easy/Hard).
+
 - [ ] Explain what fixes you applied.
+I refactored helper logic into logic_utils.py and updated imports in app.py. I fixed the higher/lower outcome handling, corrected difficulty range behavior, and improved input/attempt flow so invalid entries do not behave like valid attempts. I then used pytest tests for win/too high/too low outcomes and validated the app manually in Streamlit.
 
 ## 📸 Demo
 
 - [ ] [Insert a screenshot of your fixed, winning game here]
-
+![screenshot](image.png)
 ## 🚀 Stretch Features
 
 - [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
